@@ -1,6 +1,3 @@
-> $1
+STR=$'[FILE]\nfolder = ./uploads\nid = '$2$'\nslots = 2'
+echo "$STR" > $1
 chmod o-r $1
-echo "[FILE]" >> $1
-echo "folder = ./uploads" >> $1
-echo "id = "$2 >> $1
-echo "slots = 2" >> $1
