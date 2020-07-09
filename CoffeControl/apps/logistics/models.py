@@ -24,8 +24,8 @@ class CoffeeStock(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk == None: # Es un objeto nuevo.
-            assert( CoffeeStock.objects.filter(department=self.department, coffe_type=self.coffe_type).count() == 0 ) # Lanza la excepcion si ya existe ese CoffeStock.
-        
+            assert CoffeeStock.objects.filter(department=self.department, coffe_type=self.coffe_type).count() == 0, 'Ya existe un CoffeeStock para ese par Deparament/CoffeType'
+
         super(CoffeeStock, self).save(*args, **kwargs)
         
         if self.current_units == 0:
