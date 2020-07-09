@@ -25,12 +25,12 @@ class CoffeeStock(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk == None: # Es un objeto nuevo.
-            assert( CoffeeStock.objects.filter(department=kwargs.get('department'), coffe_type=kwargs.get('coffe_type')) )
+            pass #assert( CoffeeStock.objects.filter(department=kwargs.get('department'), coffe_type=kwargs.get('coffe_type')) )
         
         super(CoffeeStock, self).save(*args, **kwargs)
         
         if self.current_units == 0:
-            coffe_order = CoffeeOrder(coffe_stock=self, units=100, unit_price=self.coffe_type.current_price)
+            coffe_order = CoffeeOrder(coffee_stock=self, units=100, unit_price=self.coffe_type.current_price)
             coffe_order.save()
         
 
