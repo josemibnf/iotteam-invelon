@@ -13,8 +13,7 @@ class CoffeType(models.Model):
         super(CoffeType, self).save(*args, **kwargs)
         for department in Department.objects.all():
             try:
-                coffe_stock = CoffeeStock(department=department, coffe_type=self)
-                coffe_stock.save()
+                CoffeeStock(department=department, coffe_type=self).save()
             except AssertionError:
                 print('Ya existe un CoffeeStock para ese par Deparament/CoffeType')
 
@@ -25,7 +24,7 @@ class CoffeeStock(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk == None: # Es un objeto nuevo.
-            assert( CoffeeStock.objects.filter(department=self.department, coffe_type=self.coffe_type).count() >0 ) # Lanza la excepcion si ya existe ese CoffeStock.
+            assert( CoffeeStock.objects.filter(department=self.department, coffe_type=self.coffe_type).count() == 0 ) # Lanza la excepcion si ya existe ese CoffeStock.
         
         super(CoffeeStock, self).save(*args, **kwargs)
         

@@ -12,8 +12,7 @@ class Department(models.Model):
         super(Department, self).save(*args, **kwargs)
         for coffe_type in CoffeType.objects.all():
             try:
-                coffe_stock = CoffeeStock(department=self, coffe_type=coffe_type)
-                coffe_stock.save()
+                CoffeeStock(department=self, coffe_type=coffe_type).save()
             except AssertionError:
                 print('Ya existe un CoffeeStock para ese par Deparament/CoffeType')
 
