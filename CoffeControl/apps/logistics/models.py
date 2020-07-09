@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.apps import apps
+from apps.business.models import Department
 
 # Create your models here.
 class CoffeType(models.Model):
@@ -9,7 +10,7 @@ class CoffeType(models.Model):
 
     def save(self, *args, **kwargs):
         super(CoffeType, self).save(*args, **kwargs)
-        for department in 'business.Department'.objects.all():
+        for department in Department.objects.all():
             try:
                 coffe_stock = CoffeeStock(department=department, coffe_type=self)
                 coffe_stock.save()

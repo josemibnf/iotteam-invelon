@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.apps import apps
+from apps.logistics.models import CoffeType
 
 # Create your models here.
 class Department(models.Model):
@@ -8,7 +8,7 @@ class Department(models.Model):
 
     def save(self, *args, **kwargs):
         super(Department, self).save(*args, **kwargs)
-        for coffe_type in 'logistics.CoffeType'.objects.all():
+        for coffe_type in CoffeType.objects.all():
             try:
                 coffe_stock = CoffeeStock(department=self, coffe_type=coffe_type)
                 coffe_stock.save()
