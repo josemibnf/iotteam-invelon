@@ -14,7 +14,7 @@ class CoffeType(models.Model):
                 coffe_stock = CoffeeStock(department=department, coffe_type=self)
                 coffe_stock.save()
             except AssertionError:
-                print('Ya existe un CoffeeStock para ese par Deparamento/CoffeType')
+                print('Ya existe un CoffeeStock para ese par Deparament/CoffeType')
 
 class CoffeeStock(models.Model):
     current_units = models.IntegerField(validators=[MinValueValidator(0)])
