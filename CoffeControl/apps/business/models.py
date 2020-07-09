@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from apps.logistics.models import CoffeType
+
 
 # Create your models here.
 class Department(models.Model):
     name = models.CharField(max_length=30)
 
     def save(self, *args, **kwargs):
+        from apps.logistics.models import CoffeType # el modelo para el save() se importan al llamar al método para no probocar un ciclo.
+        
         super(Department, self).save(*args, **kwargs)
         for coffe_type in CoffeType.objects.all():
             try:

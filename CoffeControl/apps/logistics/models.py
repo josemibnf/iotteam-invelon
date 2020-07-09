@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.apps import apps
-from apps.business.models import Department
 
 # Create your models here.
 class CoffeType(models.Model):
@@ -9,6 +8,8 @@ class CoffeType(models.Model):
     current_price = models.FloatField(validators=[MinValueValidator(0)])
 
     def save(self, *args, **kwargs):
+        from apps.business.models import Department # el modelo para el save() se importan al llamar al método para no probocar un ciclo.
+        
         super(CoffeType, self).save(*args, **kwargs)
         for department in Department.objects.all():
             try:
