@@ -17,14 +17,19 @@ class CoffeType(models.Model):
                 print('Ya existe un CoffeeStock para ese par Deparament/CoffeType')
 
 class CoffeeStock(models.Model):
-    current_units = models.IntegerField(validators=[MinValueValidator(0)])
+    current_units = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     coffe_type = models.ForeignKey(CoffeType, on_delete=models.CASCADE)
     department = models.ForeignKey('business.Department', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        if self.pk == None: # Solo si es un objeto nuevo.
-            assert(  )
+        if self.pk == None: # Es un objeto nuevo.
+            assert( CoffeeStock.objects.filter(department=kwargs.get('department'), coffe_type=kwargs.get('coffe_type')) )
+        
         super(CoffeeStock, self).save(*args, **kwargs)
+        
+        if self.current_units == 0:
+            coffe_order = CoffeeOrder(coffe_stock=self, units=100, unit_price=self.coffe_type.current_price)
+            coffe_order.save()
         
 
 class CoffeeOrder(models.Model):
