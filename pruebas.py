@@ -53,15 +53,13 @@ def concurrency_with_coffe():
 if __name__ == "__main__":
     
     #test1
-    print('Test1\n---------')
+    print('\nTest1\n---------')
     print(get_api_data('https://invelonjobinterview.herokuapp.com/api/test1'))
-    print('\n\n')
 
     #test2
-    print('Test2\n---------')
+    print('\nTest2\n---------')
     print(get_api_data('https://invelonjobinterview.herokuapp.com/api/test2'))
-    print('\n\n')
 
     #Concurrency with coffe
-    print('Concurrency with coffe\n---------')
+    print('\nConcurrency with coffe\n---------')
     concurrency_with_coffe()
