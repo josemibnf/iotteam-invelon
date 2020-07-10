@@ -36,3 +36,22 @@ class CoffeOrderAreCreatedWithStock0(TestCase):
     def test_when_stock_is_created(self):
         coffe_stock = CoffeeStock.objects.get(department=Department.objects.get(name='terraza'))
         self.assertTrue(CoffeeOrder.objects.filter(coffee_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==1)
+
+class CoffeeOrderAreCreatedWithStock2(TestCase):
+    def setUp(self):
+        CoffeType.objects.create(name='naranjada', current_price=1.2)
+        Department.objects.create(name='terraza')
+        #Aqui ya me ha creado un CoffeStock.
+        coffe_stock = CoffeeStock.objects.get(department=Department.objects.get(name='terraza'))
+        coffe_stock.current_units = 2
+        coffe_stock.save()
+    
+    def test_when_stock_is_decreased(self):
+        # Solo tenemos que tener una orden.
+        coffe_stock = CoffeeStock.objects.get(department=Department.objects.get(name='terraza'))
+        self.assertTrue(CoffeeOrder.objects.filter(coffee_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==1)
+
+        # Al disminuir  el stock a 0, se tiene que crear otra orden.
+        coffe_stock.current_units = 0
+        coffe_stock.save()
+        self.assertTrue(CoffeeOrder.objects.filter(coffee_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==2)
