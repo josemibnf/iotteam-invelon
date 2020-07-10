@@ -7,7 +7,7 @@ class DepartmentSaveTestCase(TestCase):
     def setUp(self):
         CoffeType.objects.create(name='frappuccino', current_price=4.0)
         CoffeType.objects.create(name='cappuccino', current_price=1.5)
-        Department.objects.create(name='planta_baja')
+        Department.objects.create(name='planta_baja') # Aqui me tiene que crear los dos CoffeStocks.
     
     def test_coffe_stocks_are_created(self):
         department = Department.objects.get(name='planta_baja')
