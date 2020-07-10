@@ -13,8 +13,8 @@ class CoffeStockAssertionErrorTestCase(TestCase):
         department = Department.objects.get(name='planta_baja')
         coffe_type = CoffeType.objects.get(name='naranjada')
         with self.assertRaises(AssertionError) as e:
-            CoffeeStock.objects.create(department=department, coffe_type=coffe_type)
-        self.assertTrue('Ya existe un CoffeeStock para ese par Deparament/CoffeType' in str(e.exception))
+            CoffeStock.objects.create(department=department, coffe_type=coffe_type)
+        self.assertTrue('Ya existe un CoffeStock para ese par Deparament/CoffeType' in str(e.exception))
 
 class CoffeTypeSaveTestCase(TestCase):
     def setUp(self):
@@ -24,8 +24,8 @@ class CoffeTypeSaveTestCase(TestCase):
 
     def test_coffe_stocks_are_created(self):
         coffe_type = CoffeType.objects.get(name='cappuccino')
-        self.assertEqual(CoffeeStock.objects.filter(coffe_type=coffe_type, department=Department.objects.get(name='terraza')).count(), 1)
-        self.assertEqual(CoffeeStock.objects.filter(coffe_type=coffe_type, department=Department.objects.get(name='planta_baja')).count(), 1)
+        self.assertEqual(CoffeStock.objects.filter(coffe_type=coffe_type, department=Department.objects.get(name='terraza')).count(), 1)
+        self.assertEqual(CoffeStock.objects.filter(coffe_type=coffe_type, department=Department.objects.get(name='planta_baja')).count(), 1)
 
 class CoffeOrderAreCreatedWithStock0(TestCase):
     def setUp(self):
@@ -34,24 +34,24 @@ class CoffeOrderAreCreatedWithStock0(TestCase):
         #Aqui ya me ha creado un CoffeStock.
     
     def test_when_stock_is_created(self):
-        coffe_stock = CoffeeStock.objects.get(department=Department.objects.get(name='terraza'))
-        self.assertTrue(CoffeeOrder.objects.filter(coffee_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==1)
+        coffe_stock = CoffeStock.objects.get(department=Department.objects.get(name='terraza'))
+        self.assertTrue(CoffeOrder.objects.filter(coffe_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==1)
 
-class CoffeeOrderAreCreatedWithStock2(TestCase):
+class CoffeOrderAreCreatedWithStock2(TestCase):
     def setUp(self):
         CoffeType.objects.create(name='naranjada', current_price=1.2)
         Department.objects.create(name='terraza')
         #Aqui ya me ha creado un CoffeStock.
-        coffe_stock = CoffeeStock.objects.get(department=Department.objects.get(name='terraza'))
+        coffe_stock = CoffeStock.objects.get(department=Department.objects.get(name='terraza'))
         coffe_stock.current_units = 2
         coffe_stock.save()
     
     def test_when_stock_is_decreased(self):
         # Solo tenemos que tener una orden.
-        coffe_stock = CoffeeStock.objects.get(department=Department.objects.get(name='terraza'))
-        self.assertTrue(CoffeeOrder.objects.filter(coffee_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==1)
+        coffe_stock = CoffeStock.objects.get(department=Department.objects.get(name='terraza'))
+        self.assertTrue(CoffeOrder.objects.filter(coffe_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==1)
 
         # Al disminuir  el stock a 0, se tiene que crear otra orden.
         coffe_stock.current_units = 0
         coffe_stock.save()
-        self.assertTrue(CoffeeOrder.objects.filter(coffee_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==2)
+        self.assertTrue(CoffeOrder.objects.filter(coffe_stock=coffe_stock, unit_price=1.2, units=100, status='Pending').count()==2)

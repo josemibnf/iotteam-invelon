@@ -13,28 +13,28 @@ class CoffeType(models.Model):
         super(CoffeType, self).save(*args, **kwargs)
         for department in Department.objects.all():
             try:
-                CoffeeStock(department=department, coffe_type=self).save()
+                CoffeStock(department=department, coffe_type=self).save()
             except AssertionError:
-                print('Ya existe un CoffeeStock para ese par Deparament/CoffeType')
+                print('Ya existe un CoffeStock para ese par Deparament/CoffeType')
 
-class CoffeeStock(models.Model):
+class CoffeStock(models.Model):
     current_units = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     coffe_type = models.ForeignKey(CoffeType, on_delete=models.CASCADE)
     department = models.ForeignKey('business.Department', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         if self.pk == None: # Es un objeto nuevo.
-            assert CoffeeStock.objects.filter(department=self.department, coffe_type=self.coffe_type).count() == 0, 'Ya existe un CoffeeStock para ese par Deparament/CoffeType'
+            assert CoffeStock.objects.filter(department=self.department, coffe_type=self.coffe_type).count() == 0, 'Ya existe un CoffeStock para ese par Deparament/CoffeType'
 
-        super(CoffeeStock, self).save(*args, **kwargs)
+        super(CoffeStock, self).save(*args, **kwargs)
         
         if self.current_units == 0:
-            coffe_order = CoffeeOrder(coffee_stock=self, units=100, unit_price=self.coffe_type.current_price)
+            coffe_order = CoffeOrder(coffe_stock=self, units=100, unit_price=self.coffe_type.current_price)
             coffe_order.save()
         
 
-class CoffeeOrder(models.Model):
+class CoffeOrder(models.Model):
     unit_price = models.FloatField(validators=[MinValueValidator(0)])
     units = models.IntegerField(validators=[MinValueValidator(0)])
     status = models.CharField(max_length=8, choices=[('Pending', 'Pending'), ('Accepted', 'Accepted')] , default='Pending')
-    coffee_stock = models.ForeignKey(CoffeeStock, on_delete=models.CASCADE)
+    coffe_stock = models.ForeignKey(CoffeStock, on_delete=models.CASCADE)

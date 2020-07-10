@@ -1,6 +1,6 @@
 from django.test import TestCase
 from apps.business.models import Department
-from apps.logistics.models import CoffeType, CoffeeStock
+from apps.logistics.models import CoffeType, CoffeStock
 
 # Create your tests here.
 class DepartmentSaveTestCase(TestCase):
@@ -11,5 +11,5 @@ class DepartmentSaveTestCase(TestCase):
     
     def test_coffe_stocks_are_created(self):
         department = Department.objects.get(name='planta_baja')
-        self.assertEqual(CoffeeStock.objects.filter(coffe_type=CoffeType.objects.get(name='cappuccino'), department=department).count(), 1)
-        self.assertEqual(CoffeeStock.objects.filter(coffe_type=CoffeType.objects.get(name='frappuccino'), department=department).count(), 1)
+        self.assertEqual(CoffeStock.objects.filter(coffe_type=CoffeType.objects.get(name='cappuccino'), department=department).count(), 1)
+        self.assertEqual(CoffeStock.objects.filter(coffe_type=CoffeType.objects.get(name='frappuccino'), department=department).count(), 1)
